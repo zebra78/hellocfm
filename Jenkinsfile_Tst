@@ -9,38 +9,21 @@ pipeline {
       string(name: 'env', defaultValue: 'tst', description: 'deploy env')
     }
     stages {
-        stage('Commit tag') {
+        stage('Clone tag') {
             steps {
                 checkout changelog: false, poll: false, 
                   scm: [$class: 'GitSCM', branches: [[name: '*/${version}']], 
                   doGenerateSubmoduleConfigurations: false, 
                   extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'app']],  
                   submoduleCfg: [], userRemoteConfigs: 
-                  [[url: 'ssh://vagrant@192.168.100.100/~/gitserver/helloapp.git']]]
+                  [[url: 'ssh://git@192.168.100.100:29418/root/helloapp.git']]]
 
                 checkout changelog: false, poll: false, 
                   scm: [$class: 'GitSCM', branches: [[name: '*/${env}']], 
                   doGenerateSubmoduleConfigurations: false, 
                   extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'env']],  
                   submoduleCfg: [], userRemoteConfigs: 
-                  [[url: 'ssh://vagrant@192.168.100.100/~/gitserver/helloenv.git']]]
-            }
-        }
-        stage('Clone master') {
-            steps {
-                checkout changelog: false, poll: false, 
-                  scm: [$class: 'GitSCM', branches: [[name: '*/${version}']], 
-                  doGenerateSubmoduleConfigurations: false, 
-                  extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'app']],  
-                  submoduleCfg: [], userRemoteConfigs: 
-                  [[url: 'ssh://vagrant@192.168.100.100/~/gitserver/helloapp.git']]]
-
-                checkout changelog: false, poll: false, 
-                  scm: [$class: 'GitSCM', branches: [[name: '*/${env}']], 
-                  doGenerateSubmoduleConfigurations: false, 
-                  extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'env']],  
-                  submoduleCfg: [], userRemoteConfigs: 
-                  [[url: 'ssh://vagrant@192.168.100.100/~/gitserver/helloenv.git']]]
+                  [[url: 'ssh://git@192.168.100.100:29418/root/helloenv.git']]]
             }
         }
 
