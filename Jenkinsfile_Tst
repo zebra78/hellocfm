@@ -26,8 +26,6 @@ pipeline {
                   [[url: 'ssh://vagrant@192.168.100.100/~/gitserver/helloenv.git']]]
             }
         }
-
-    stages {
         stage('Clone master') {
             steps {
                 checkout changelog: false, poll: false, 
