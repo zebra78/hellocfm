@@ -9,6 +9,11 @@ pipeline {
       string(name: 'env', defaultValue: 'tst', description: 'deploy env')
     }
     stages {
+        stage('Test') {
+            steps {
+                echo 'Testing'
+            }
+        }
 /*        stage('Clone tag') {
             steps {
                 checkout changelog: false, poll: false, 
@@ -25,7 +30,7 @@ pipeline {
                   submoduleCfg: [], userRemoteConfigs: 
                   [[url: 'ssh://git@192.168.100.100:29418/root/helloenv.git']]]
             }
-        } */
+        } 
 
         stage('Run playbook') {
             steps {
@@ -67,5 +72,5 @@ pipeline {
               echo "Hello, ${BUILD_USER_ID}, nice to meet you."
             }
         }
-    }
+    }*/
 }
