@@ -1,76 +1,11 @@
 pipeline {
     agent any
-    options {
-        //skipStagesAfterUnstable()
-        buildDiscarder(logRotator(numToKeepStr: '3', daysToKeepStr: '3'))
-    }
-    parameters { 
-      string(name: 'version', defaultValue: 'r19.5.1', description: 'release version')
-      string(name: 'env', defaultValue: 'tst', description: 'deploy env')
-    }
+
     stages {
         stage('Test') {
             steps {
                 echo 'Testing'
-            }
         }
-/*        stage('Clone tag') {
-            steps {
-                checkout changelog: false, poll: false, 
-                  scm: [$class: 'GitSCM', branches: [[name: '*/${version}']], 
-                  doGenerateSubmoduleConfigurations: false, 
-                  extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'app']],  
-                  submoduleCfg: [], userRemoteConfigs: 
-                  [[url: 'ssh://git@192.168.100.100:29418/root/helloapp.git']]]
+    }
 
-                checkout changelog: false, poll: false, 
-                  scm: [$class: 'GitSCM', branches: [[name: '*/${env}']], 
-                  doGenerateSubmoduleConfigurations: false, 
-                  extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'env']],  
-                  submoduleCfg: [], userRemoteConfigs: 
-                  [[url: 'ssh://git@192.168.100.100:29418/root/helloenv.git']]]
-            }
-        } 
-
-        stage('Run playbook') {
-            steps {
-              ansiblePlaybook disableHostKeyChecking: true, extras: '-e "version=${version}"', inventory: 'hosts', playbook: 'webdeployer.yml'
-            }
-        }
-
-        stage('Load settings') {
-          steps {
-            script {
-              wrap([$class: 'BuildUser']) {
-                  env.BUILD_USER_ID = sh(returnStdout: true, script: "echo ${BUILD_USER_ID}").trim()
-                  env.version = sh(returnStdout: true, script: "echo ${version}").trim()
-              }
-            }
-          }
-        }
-
-        stage('Approval') {
-            when {
-                //expression { BRANCH_NAME ==~ /(production|staging)/ }
-                beforeInput true
-                anyOf {
-                    environment name: 'BUILD_USER_ID', value: 'mmukthav'
-                    environment name: 'BUILD_USER_ID', value: 'mm009780'
-                }
-            }
-            input {
-                message "Should we continue?"
-                ok "Yes, we should."
-            }
-            steps {
-              echo "Hello, ${BUILD_USER_ID}, nice to meet you."
-              build job: 'welcome_pre', parameters: [string(name: 'version', value: String.valueOf(version)), string(name: 'env', value: 'pre')], propagate: false
-            }
-        }
-        stage('Trigger Pre') {
-            steps {
-              echo "Hello, ${BUILD_USER_ID}, nice to meet you."
-            }
-        }
-    }*/
 }
