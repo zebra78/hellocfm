@@ -1,0 +1,132 @@
+/*
+pipeline {
+    agent any
+    stages {
+      stage('22') {
+            steps {
+                sh label: '', script: 'env'
+                //echo 'Hello World'
+            }
+        }
+
+      stage('33') {
+        steps {
+          script {
+            wrap([$class: 'BuildUser']) {
+                env.BUILD_USER_ID = sh(returnStdout: true, script: "echo ${BUILD_USER_ID}").trim()
+            }
+          }
+        }
+      }
+
+      stage('44') {
+            when {
+                beforeInput true
+                environment name: 'USER', value: 'jenkins'
+            }
+            input {
+                message "Deploy to production?"
+                id "simple-input"
+            }
+            steps {
+                echo 'Deploying by ${BUILD_USER_ID}'
+            }
+        }
+      stage('222') {
+            steps {
+                sh label: '', script: 'env'
+                //echo 'Hello World'
+            }
+        }
+    }
+}
+
+
+
+pipeline {
+    agent none
+    stages {
+        stage('Example Build') {
+            steps {
+                echo 'Hello World'
+            }
+        }
+        stage('Example Deploy') {
+            //when {
+            //    beforeInput true
+                //beforeInput false
+                //environment name: 'BUILD_USER_ID', value: 'mmukthav'
+            //}
+            input {
+                message "Deploy to production?"
+                ok "Ok"
+            }
+            steps {
+                echo "Hello, ${BUILD_USER_ID}, nice to meet you."
+            }
+        }
+    }
+}
+
+
+
+
+
+
+pipeline {
+    agent any
+    stages {
+        stage('Job 1') {
+            steps {
+                echo 'Job 1'
+            }
+        }
+        stage('goto Job 2') {
+          when {
+            
+          }
+          steps {
+            build job: 'welcome_pre', parameters: [string(name: 'version', value: 'r19.5.1'), string(name: 'env', value: 'tst')], propagate: false
+          }
+        }
+    }
+}
+
+pipeline {
+    agent any
+    stages {
+        stage('Example Build') {
+            steps {
+                echo 'Hello World'
+            }
+        }
+        stage('Example Deploy') {
+            when {
+                branch 'master'
+            }
+            steps {
+                echo 'Deploying'
+            }
+        }
+    }
+}
+
+*/
+ pipeline {
+    agent any
+    stages {
+        stage('Example') {
+            input {
+                message "Should we continue?"
+                ok "Yes, we should."
+                //submitter "alice,bob"
+                parameters {
+                    string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
+                }
+            }
+            steps {
+                echo "Hello, ${PERSON}, nice to meet you."
+            }
+        }
+    }
+} 

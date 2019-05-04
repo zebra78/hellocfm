@@ -1,0 +1,43 @@
+---
+- name: Playbook to install apache2 and mysql
+  hosts: webservers
+  become: yes
+
+  vars:
+    env: null  
+
+  vars_files:
+    - env/props.yml
+
+  tasks:
+    - name: install apache
+      apt: name=apache2 state=installed
+
+    - name: install php
+      apt: name={{item}} state=installed
+      with_items:
+        - php
+        - libapache2-mod-php
+        - php-mysql
+
+    - name: copy files
+      template: src={{ item }} dest=/var/www/html/{{ item | basename }}
+      with_fileglob:
+        - app/files/*
+
+    - name: copy www_templates
+      template: src={{ item }} dest=/var/www/html/{{ item | basename | regex_replace('.j2','') }}
+      with_fileglob:
+        - app/templates/www/*.j2
+
+    - name: copy conf_templates
+      template: src={{ item }} dest=/etc/apache2/{{ item | basename | regex_replace('.j2','') }}
+      with_fileglob:
+        - app/templates/conf/*.j2
+      notify: restart apache2
+
+
+  handlers:
+    - name: restart apache2
+      service: name=apache2 state=restarted
+
