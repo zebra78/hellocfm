@@ -7,7 +7,7 @@
     env: null  
 
   vars_files:
-    - ../env/props.yml
+    - ../{{ env }}/props.yml
 
   tasks:
     - name: install apache
