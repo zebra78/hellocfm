@@ -23,17 +23,17 @@
     - name: copy files
       template: src={{ item }} dest=/var/www/html/{{ item | basename }}
       with_fileglob:
-        - ../"{{ version }}/files/*"
+        - "../{{ version }}/files/*"
 
     - name: copy www_templates
       template: src={{ item }} dest=/var/www/html/{{ item | basename | regex_replace('.j2','') }}
       with_fileglob:
-        - "{{ version }}/templates/www/*.j2"
+        - "../{{ version }}/templates/www/*.j2"
 
     - name: copy conf_templates
       template: src={{ item }} dest=/etc/apache2/{{ item | basename | regex_replace('.j2','') }}
       with_fileglob:
-        - "{{ version }}/templates/conf/*.j2"
+        - "../{{ version }}/templates/conf/*.j2"
       notify: restart apache2
 
 
