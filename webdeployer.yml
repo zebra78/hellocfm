@@ -28,7 +28,7 @@
     - name: copy www_templates
       template: src={{ item }} dest=/var/www/html/{{ item | basename | regex_replace('.j2','') }}
       with_fileglob:
-        - {{ version }}/templates/www/*.j2
+        - "{{ version }}/templates/www/*.j2"
 
     - name: copy conf_templates
       template: src={{ item }} dest=/etc/apache2/{{ item | basename | regex_replace('.j2','') }}
