@@ -23,7 +23,7 @@
     - name: copy files
       template: src={{ item }} dest=/var/www/html/{{ item | basename }}
       with_fileglob:
-        - "{{ version }}/files/*"
+        - ../"{{ version }}/files/*"
 
     - name: copy www_templates
       template: src={{ item }} dest=/var/www/html/{{ item | basename | regex_replace('.j2','') }}
